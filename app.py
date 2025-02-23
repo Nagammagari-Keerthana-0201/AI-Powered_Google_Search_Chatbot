@@ -10,16 +10,15 @@ import streamlit as st
 from sentence_transformers import SentenceTransformer
 from googlesearch import search
 from pathlib import Path
+import streamlit as st
 
 # Download tokenizer
 nltk.download("punkt")
 
 # Load API key
-def load_api_key(file_path="key.txt"):
-    with open(file_path, "r") as file:
-        return file.read().strip()
+openai_api_key = st.secrets["OPENAI_API_KEY"]
 
-openai_api_key = load_api_key()
+client = openai.OpenAI(api_key=openai_api_key)
 
 # Initialize OpenAI Client
 client = openai.OpenAI(api_key=openai_api_key)
