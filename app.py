@@ -1,4 +1,5 @@
 import openai
+import asyncio
 import requests
 import time
 import json
@@ -14,13 +15,10 @@ import streamlit as st
 
 # Download tokenizer
 nltk.download("punkt")
-
+nltk.download("punkt_tab")
 # Load API key
 openai_api_key = st.secrets["OPENAI_API_KEY"]
 
-client = openai.OpenAI(api_key=openai_api_key)
-
-# Initialize OpenAI Client
 client = openai.OpenAI(api_key=openai_api_key)
 
 # Initialize Sentence Transformer
@@ -103,10 +101,10 @@ def find_similar(query, top_k=3):
     return [(sentences[i], metadata[i]) for i in I[0] if i < len(sentences)]
 
 # OpenAI API call
-def chat_with_openai(prompt):
+async def chat_with_openai(prompt):
     try:
-        rate_limited_request()
-        response = client.chat.completions.create(
+        response = await asyncio.to_thread(
+            client.chat.completions.create,
             model="gpt-4o-mini",
             messages=[{"role": "system", "content": "You are an AI assistant."},
                       {"role": "user", "content": prompt}],
@@ -115,6 +113,7 @@ def chat_with_openai(prompt):
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
+
 
 # Streamlit UI
 st.title("AI-Powered Google Search Chatbot")
