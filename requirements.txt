@@ -1,9 +1,10 @@
 streamlit
 openai
-requests
-beautifulsoup4
-nltk
-numpy
 faiss-cpu
 sentence-transformers
+beautifulsoup4
+requests
+nltk
 googlesearch-python
+numpy
+nest-asyncio
